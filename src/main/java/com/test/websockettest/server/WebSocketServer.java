@@ -36,7 +36,8 @@ public class WebSocketServer {
         SessionSet.add(session);
         int cnt = OnlineCount.incrementAndGet(); // 在线数加1
         log.info("有连接加入，当前连接数为：{}", cnt);
-        SendMessage(session, "连接成功");
+        //调用自写的方法
+        this.SendMessage(session, "连接成功");
     }
 
     /**
@@ -60,21 +61,15 @@ public class WebSocketServer {
     }
 
     /**
-     * 出现错误
-     */
-    @OnError
-    public void onError(Session session, Throwable error) {
-        log.error("发生错误：{}，Session ID： {}",error.getMessage(),session.getId());
-        error.printStackTrace();
-    }
-
-    /**
-     * 发送消息，实践表明，每次浏览器刷新，session会发生变化。
+     * 发送消息给前端，实践表明，每次浏览器刷新,连接都会断开，session会发生变化。
+     * 进入参数：session对象，String message消息
      */
     public static void SendMessage(Session session, String message) {
         try {
-            session.getBasicRemote().sendText(String.format("%s (From Server，Session ID=%s)",message,session.getId()));
-        } catch (IOException e) {
+            // 向前台传递text信息
+//            session.getBasicRemote().sendText(String.format("%s (From Server，Session ID=%s)",message,session.getId()));
+            session.getBasicRemote().sendText(message+"，sessionID="+session.getId());
+        } catch (Exception e) {
             log.error("发送消息出错：{}", e.getMessage());
             e.printStackTrace();
         }
@@ -108,5 +103,13 @@ public class WebSocketServer {
         else{
             log.warn("没有找到你指定ID的会话：{}",sessionId);
         }
+    }
+    /**
+     * 出现错误调用的方法
+     */
+    @OnError
+    public void onError(Session session, Throwable error) {
+        log.error("发生错误：{}，Session ID： {}",error.getMessage(),session.getId());
+        error.printStackTrace();
     }
 }

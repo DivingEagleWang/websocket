@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/ws")
 public class WebSocketController {
+    /**
+     * 群发消息内容
+     */
     @GetMapping(value = "/sendAll")
     public String sendAllMessage(@RequestParam(required = true) String message){
+        // http 请求的群发信息
         try {
             WebSocketServer.BroadCastInfo(message);
         }catch (Exception e){
