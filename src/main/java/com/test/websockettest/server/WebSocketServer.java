@@ -57,7 +57,6 @@ public class WebSocketServer {
     public void onMessage(String message, Session session) {
         log.info("来自客户端的消息：{}",message);
         SendMessage(session, "收到消息，消息内容："+message);
-
     }
 
     /**
@@ -74,18 +73,6 @@ public class WebSocketServer {
             e.printStackTrace();
         }
     }
-
-    /**
-     * 群发消息
-     */
-    public static void BroadCastInfo(String message) throws IOException {
-        for (Session session : SessionSet) {
-            if(session.isOpen()){
-                SendMessage(session, message);
-            }
-        }
-    }
-
     /**
      * 指定Session发送消息
      */
@@ -102,6 +89,16 @@ public class WebSocketServer {
         }
         else{
             log.warn("没有找到你指定ID的会话：{}",sessionId);
+        }
+    }
+    /**
+     * 群发消息
+     */
+    public static void BroadCastInfo(String message) throws IOException {
+        for (Session session : SessionSet) {
+            if(session.isOpen()){
+                SendMessage(session, message);
+            }
         }
     }
     /**
