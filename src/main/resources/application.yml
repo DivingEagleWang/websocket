@@ -1,2 +1,10 @@
 server:
   port: 8099
+spring:
+  redis:
+    host: 127.0.0.1  # redis所在服务器的IP
+    port: 6379    #端口 一般为6379
+    password:    # 密码，没有设置就不用填
+    jedis:
+      pool:
+        max-active: -1  #最大连接数，负数 为无限
