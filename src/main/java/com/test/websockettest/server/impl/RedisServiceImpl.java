@@ -53,7 +53,7 @@ public class RedisServiceImpl implements RedisService {
         }
         return hasKey;
     }
-    // 获得key
+    // 获取key
     @Override
     public String get(String key) {
         ValueOperations<String, String> vo = redisTemplate.opsForValue();
